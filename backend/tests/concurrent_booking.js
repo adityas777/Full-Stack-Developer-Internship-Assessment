@@ -7,9 +7,15 @@ const User = require('../models/User');
 
 const runTest = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/event_booking';
-    await mongoose.connect(mongoUri);
-    console.log(`Test database connected to: ${mongoUri}`);
+    const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/event_booking';
+    try {
+      await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
+      console.log(`Test database connected to: ${mongoUri}`);
+    } catch (err) {
+      console.warn(`Primary connection to ${mongoUri} failed. Retrying with local MongoDB...`);
+      await mongoose.connect('mongodb://127.0.0.1:27017/event_booking');
+      console.log('Test database connected to local MongoDB.');
+    }
 
     // 1. Clear previous test records
     await Event.deleteMany({ name: 'Concurrency Test Event' });

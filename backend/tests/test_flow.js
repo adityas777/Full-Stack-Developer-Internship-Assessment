@@ -7,9 +7,15 @@ const Booking = require('../models/Booking');
  
 const runTest = async () => {
   try {
-    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/event_booking';
-    await mongoose.connect(mongoUri);
-    console.log(`Connected to DB for flow testing: ${mongoUri}`);
+    const mongoUri = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/event_booking';
+    try {
+      await mongoose.connect(mongoUri, { serverSelectionTimeoutMS: 5000 });
+      console.log(`Connected to DB for flow testing: ${mongoUri}`);
+    } catch (err) {
+      console.warn(`Primary connection to ${mongoUri} failed. Retrying with local MongoDB...`);
+      await mongoose.connect('mongodb://127.0.0.1:27017/event_booking');
+      console.log('Connected to DB for flow testing (local MongoDB).');
+    }
 
     // 1. Setup mock user & event
     const email = `test-persist-${Date.now()}@test.com`;
