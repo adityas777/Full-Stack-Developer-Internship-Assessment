@@ -71,7 +71,7 @@ router.post('/', protect, async (req, res) => {
 // @access  Private
 router.get('/user', protect, async (req, res) => {
   try {
-    const bookings = await Booking.find({ user: req.user._id })
+    const bookings = await Booking.find({ user: req.user._id, status: 'confirmed' })
       .populate('event')
       .sort({ createdAt: -1 });
     res.json(bookings);
@@ -96,13 +96,19 @@ router.delete('/:id', protect, async (req, res) => {
       return res.status(401).json({ message: 'Not authorized to cancel this booking' });
     }
 
+    // Check if booking is already cancelled
+    if (booking.status === 'cancelled') {
+      return res.status(400).json({ message: 'Booking is already cancelled' });
+    }
+
     // Increment available seats in the event
     await Event.findByIdAndUpdate(booking.event, {
       $inc: { availableSeats: booking.seatsBooked },
     });
 
-    // Remove the booking
-    await booking.deleteOne();
+    // Update booking status to cancelled instead of deleting
+    booking.status = 'cancelled';
+    await booking.save();
 
     res.json({ message: 'Booking cancelled successfully, seats released' });
   } catch (error) {

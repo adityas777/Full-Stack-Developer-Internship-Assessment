@@ -229,7 +229,7 @@ All request and response payloads are in `application/json` format. Protected ro
   }
   ```
 
-#### Get Logged-In User Bookings
+#### Get Logged-In User Bookings (Confirmed Only)
 - **Route**: `GET /api/bookings/user`
 - **Access**: Private (Requires token)
 - **Success Response (200 OK)**:
@@ -245,12 +245,13 @@ All request and response payloads are in `application/json` format. Protected ro
         "venue": "Silicon Valley Convention Center, CA"
       },
       "seatsBooked": 3,
+      "status": "confirmed",
       "createdAt": "2026-06-19T01:40:00.000Z"
     }
   ]
   ```
 
-#### Cancel Booking
+#### Cancel Booking (Soft Cancel)
 - **Route**: `DELETE /api/bookings/:id`
 - **Access**: Private (Requires token)
 - **Success Response (200 OK)**:
@@ -259,6 +260,7 @@ All request and response payloads are in `application/json` format. Protected ro
     "message": "Booking cancelled successfully, seats released"
   }
   ```
+  *(Note: This updates the booking status to `cancelled` and releases the seats back to the event instead of hard-deleting the database record).*
 
 ---
 

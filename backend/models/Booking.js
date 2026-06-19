@@ -17,6 +17,11 @@ const bookingSchema = new mongoose.Schema(
       required: [true, 'Please specify the number of seats to book'],
       min: [1, 'Must book at least 1 seat'],
     },
+    status: {
+      type: String,
+      enum: ['confirmed', 'cancelled'],
+      default: 'confirmed',
+    },
   },
   {
     timestamps: true,
