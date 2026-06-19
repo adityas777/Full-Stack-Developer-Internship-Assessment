@@ -1,3 +1,5 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require('mongoose');
 const Event = require('../models/Event');
 const Booking = require('../models/Booking');
@@ -5,8 +7,9 @@ const User = require('../models/User');
 
 const runTest = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/event_booking');
-    console.log('Test database connected.');
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/event_booking';
+    await mongoose.connect(mongoUri);
+    console.log(`Test database connected to: ${mongoUri}`);
 
     // 1. Clear previous test records
     await Event.deleteMany({ name: 'Concurrency Test Event' });

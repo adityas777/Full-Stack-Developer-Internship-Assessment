@@ -1,12 +1,15 @@
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 const mongoose = require('mongoose');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Booking = require('../models/Booking');
-
+ 
 const runTest = async () => {
   try {
-    await mongoose.connect('mongodb://localhost:27017/event_booking');
-    console.log('Connected to DB for flow testing...');
+    const mongoUri = process.env.MONGO_URI || 'mongodb://localhost:27017/event_booking';
+    await mongoose.connect(mongoUri);
+    console.log(`Connected to DB for flow testing: ${mongoUri}`);
 
     // 1. Setup mock user & event
     const email = `test-persist-${Date.now()}@test.com`;
