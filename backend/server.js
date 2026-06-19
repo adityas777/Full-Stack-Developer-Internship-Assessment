@@ -11,6 +11,11 @@ const bookingRoutes = require('./routes/bookings');
 // Load environment variables
 dotenv.config();
 
+// Ensure JWT_SECRET is configured
+if (!process.env.JWT_SECRET) {
+  throw new Error('FATAL ERROR: JWT_SECRET environment variable is not defined.');
+}
+
 // Connect to MongoDB
 connectDB();
 
