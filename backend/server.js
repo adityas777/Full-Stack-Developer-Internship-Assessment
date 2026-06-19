@@ -23,7 +23,28 @@ const app = express();
 
 // Middleware
 const corsOptions = {
-  origin: process.env.NODE_ENV === 'production' ? process.env.ALLOWED_ORIGIN : true,
+  origin: (origin, callback) => {
+    // In non-production, allow all origins
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    
+    // In production, require ALLOWED_ORIGIN to be set
+    const allowed = process.env.ALLOWED_ORIGIN;
+    if (!allowed) {
+      console.warn('CORS WARNING: NODE_ENV is production but ALLOWED_ORIGIN is not defined.');
+      return callback(null, false);
+    }
+    
+    // Normalize trailing slashes for origin comparison
+    const normalize = (url) => url.trim().replace(/\/+$/, '');
+    if (!origin || normalize(origin) === normalize(allowed)) {
+      return callback(null, true);
+    }
+    
+    console.warn(`CORS REJECTED: Request origin "${origin}" does not match ALLOWED_ORIGIN "${allowed}"`);
+    return callback(null, false);
+  }
 };
 app.use(cors(corsOptions));
 app.use(express.json());
