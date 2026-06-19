@@ -5,14 +5,17 @@ A full-stack Event Booking System allowing users to register, log in, browse liv
 Built with **Node.js, Express, MongoDB (Mongoose)** on the backend, and **Vite + React** styled with **Premium Glassmorphic Vanilla CSS** on the frontend.
 
 ---
+# Deployed link: https://bookit-frontend-8zlz.onrender.com/
+
+---
 
 ## Features
 
-- 🔐 **Secure User Auth**: Password hashing using `bcryptjs` and session persistence with JSON Web Tokens (JWT).
-- ⚡ **Concurrency-Safe Checkout**: MongoDB atomic filters prevent over-booking seats during simultaneous checkouts (race conditions).
-- 🎨 **Premium Visuals**: Sleek space-dark layout using glassmorphism styling, micro-animations, skeleton loaders, and responsive layouts.
-- 🗺️ **Visual Seat Map**: Visual preview grids displaying available and reserved seats for each event.
-- 🔔 **Interactive Alerting**: Floating Toast system providing confirmation alerts on bookings and cancellations.
+-  **Secure User Auth**: Password hashing using `bcryptjs` and session persistence with JSON Web Tokens (JWT).
+-  **Concurrency-Safe Checkout**: MongoDB atomic filters prevent over-booking seats during simultaneous checkouts (race conditions).
+-  **Premium Visuals**: Sleek space-dark layout using glassmorphism styling, micro-animations, skeleton loaders, and responsive layouts.
+-  **Visual Seat Map**: Visual preview grids displaying available and reserved seats for each event.
+-  **Interactive Alerting**: Floating Toast system providing confirmation alerts on bookings and cancellations.
 
 ---
 
