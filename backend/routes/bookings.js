@@ -15,8 +15,8 @@ router.post('/', protect, async (req, res) => {
     if (!eventId) {
       return res.status(400).json({ message: 'Event ID is required' });
     }
-    if (!seatsBooked || seatsBooked < 1) {
-      return res.status(400).json({ message: 'Must book at least 1 seat' });
+    if (!Number.isInteger(seatsBooked) || seatsBooked < 1) {
+      return res.status(400).json({ message: 'Seats booked must be a positive integer' });
     }
 
     // Step 1: Atomically check seat availability and decrement
